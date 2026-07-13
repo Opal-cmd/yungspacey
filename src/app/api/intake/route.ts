@@ -6,6 +6,7 @@ import {
   validateIntake,
   type IntakePayload,
 } from "@/lib/intake";
+import { SITE_URL } from "@/lib/site";
 
 export const runtime = "nodejs";
 
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
     subject: `New intake · ${artistName} · ${service}`,
     replyTo: undefined,
     text: [
-      "New project intake from yungspacey.vercel.app",
+      `New project intake from ${SITE_URL}`,
       "",
       `Artist / Stage Name: ${artistName}`,
       `Instagram: ${instagram}`,

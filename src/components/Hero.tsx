@@ -9,6 +9,7 @@ export function Hero() {
   return (
     <section
       id="hero"
+      aria-labelledby="hero-heading"
       className="snap-section relative flex flex-col justify-end overflow-x-clip px-4 pb-16 pt-28 sm:px-6 md:px-10 md:pb-24"
     >
       <div className="ambient-glow pointer-events-none absolute inset-0" />
@@ -30,9 +31,12 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto w-full max-w-6xl">
         <Reveal immediate>
-          <p className="mb-5 font-[family-name:var(--font-syne)] text-[2.75rem] leading-none font-extrabold tracking-tight text-white sm:mb-6 sm:text-6xl md:text-7xl lg:text-8xl">
+          <h1
+            id="hero-heading"
+            className="mb-5 font-[family-name:var(--font-syne)] text-[2.75rem] leading-none font-extrabold tracking-tight text-white sm:mb-6 sm:text-6xl md:text-7xl lg:text-8xl"
+          >
             yungspacey
-          </p>
+          </h1>
         </Reveal>
 
         <Reveal immediate delay={0.1}>
@@ -40,15 +44,16 @@ export function Hero() {
         </Reveal>
 
         <Reveal immediate delay={0.18}>
-          <h1 className="max-w-3xl font-[family-name:var(--font-syne)] text-[1.35rem] leading-[1.2] font-semibold tracking-tight text-white sm:text-3xl md:text-4xl lg:text-[2.75rem]">
+          <p className="max-w-3xl font-[family-name:var(--font-syne)] text-[1.35rem] leading-[1.2] font-semibold tracking-tight text-white sm:text-3xl md:text-4xl lg:text-[2.75rem]">
             UNCOMPROMISING SONICS FOR THE UNDERGROUND.
-          </h1>
+          </p>
         </Reveal>
 
         <Reveal immediate delay={0.28}>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted sm:mt-5 md:text-base">
-            Based in Toronto. Working across R&B, drill, trap, and anything in between.
-            Precision engineering — from raw session to mastered record.
+            Toronto music producer &amp; sound engineer. Mix, master, and executive
+            production across R&amp;B, drill, trap, and anything in between —
+            from raw session to release-ready master.
           </p>
         </Reveal>
 

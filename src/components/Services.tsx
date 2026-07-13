@@ -40,6 +40,7 @@ export function Services() {
   return (
     <section
       id="services"
+      aria-labelledby="services-heading"
       className="snap-section relative flex flex-col justify-center px-4 py-16 sm:px-6 sm:py-24 md:px-10"
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#000_0%,#050508_50%,#000_100%)]" />
@@ -51,8 +52,11 @@ export function Services() {
           </p>
         </Reveal>
         <Reveal delay={0.08}>
-          <h2 className="font-[family-name:var(--font-syne)] text-3xl font-bold tracking-tight text-white md:text-5xl">
-            What I Do
+          <h2
+            id="services-heading"
+            className="font-[family-name:var(--font-syne)] text-3xl font-bold tracking-tight text-white md:text-5xl"
+          >
+            Mix, Master &amp; Production
           </h2>
         </Reveal>
         <Reveal delay={0.16}>
