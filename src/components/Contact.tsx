@@ -1,12 +1,15 @@
 "use client";
 
+import { INSTAGRAM_URL } from "@/lib/site";
 import { Reveal } from "./Reveal";
 import { IntakeForm } from "./IntakeForm";
+import { InstagramIcon } from "./InstagramIcon";
 
 export function Contact() {
   return (
     <section
       id="contact"
+      aria-labelledby="contact-heading"
       className="snap-section relative flex flex-col justify-center px-4 py-16 sm:px-6 sm:py-24 md:px-10"
     >
       <div
@@ -24,7 +27,10 @@ export function Contact() {
           </p>
         </Reveal>
         <Reveal delay={0.08}>
-          <h2 className="font-[family-name:var(--font-syne)] text-3xl font-bold tracking-tight text-white md:text-5xl">
+          <h2
+            id="contact-heading"
+            className="font-[family-name:var(--font-syne)] text-3xl font-bold tracking-tight text-white md:text-5xl"
+          >
             Intake &amp; Booking
           </h2>
         </Reveal>
@@ -45,9 +51,21 @@ export function Contact() {
             <p className="font-[family-name:var(--font-syne)] text-sm font-semibold tracking-[0.2em] text-white uppercase">
               yungspacey
             </p>
-            <p className="text-[10px] tracking-[0.2em] text-muted uppercase">
-              © 2026 · Uncompromising sonics
-            </p>
+            <div className="flex flex-col items-start gap-3 sm:items-end">
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram @yxngspacey"
+                className="inline-flex items-center gap-2 text-[10px] tracking-[0.18em] text-muted uppercase transition-colors hover:text-white"
+              >
+                <InstagramIcon size={14} />
+                @yxngspacey
+              </a>
+              <p className="text-[10px] tracking-[0.2em] text-muted uppercase">
+                © 2026 · Uncompromising sonics
+              </p>
+            </div>
           </footer>
         </Reveal>
       </div>

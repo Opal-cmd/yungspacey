@@ -1,5 +1,8 @@
 "use client";
 
+import { INSTAGRAM_URL } from "@/lib/site";
+import { InstagramIcon } from "./InstagramIcon";
+
 const links = [
   { href: "#soundbank", label: "Soundbank" },
   { href: "#services", label: "Services" },
@@ -17,7 +20,10 @@ export function Nav() {
         >
           yungspacey
         </a>
-        <nav className="flex min-w-0 items-center justify-end gap-3 overflow-x-auto sm:gap-6 md:gap-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav
+          aria-label="Primary"
+          className="flex min-w-0 items-center justify-end gap-3 overflow-x-auto sm:gap-6 md:gap-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           {links.map((link) => (
             <a
               key={link.href}
@@ -27,6 +33,15 @@ export function Nav() {
               {link.label}
             </a>
           ))}
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram @yxngspacey"
+            className="shrink-0 py-2 text-muted transition-colors hover:text-white active:text-white"
+          >
+            <InstagramIcon size={15} />
+          </a>
         </nav>
       </div>
     </header>

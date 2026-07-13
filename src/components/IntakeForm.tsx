@@ -223,7 +223,7 @@ export function IntakeForm() {
                   type="text"
                   name="instagram"
                   autoComplete="off"
-                  placeholder="@yungspacey"
+                  placeholder="@yxngspacey"
                   value={values.instagram}
                   onChange={(e) => updateField("instagram", e.target.value)}
                   onBlur={() => handleBlur("instagram")}
