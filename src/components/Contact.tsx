@@ -1,6 +1,7 @@
 "use client";
 
 import { Reveal } from "./Reveal";
+import { IntakeForm } from "./IntakeForm";
 
 export function Contact() {
   return (
@@ -24,106 +25,19 @@ export function Contact() {
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="font-[family-name:var(--font-syne)] text-3xl font-bold tracking-tight text-white md:text-5xl">
-            Contact
+            Intake &amp; Booking
           </h2>
         </Reveal>
         <Reveal delay={0.16}>
           <p className="mt-4 max-w-lg text-sm text-muted md:text-base">
-            Tell me about the record. References, deadlines, and how heavy you
-            want it to hit.
+            Lock in the brief. Artist details, service tier, references, and
+            stems — then we build.
           </p>
         </Reveal>
 
         <Reveal delay={0.24}>
-          <div className="mt-10 border border-white/10 bg-obsidian/90 p-4 shadow-[0_0_50px_rgba(139,92,246,0.06)] sm:mt-12 sm:p-6 md:p-10">
-            <form
-              className="grid gap-5 sm:gap-6 md:grid-cols-2"
-              onSubmit={(e) => e.preventDefault()}
-              aria-label="Project intake form placeholder"
-            >
-              <label className="block md:col-span-1">
-                <span className="mb-2 block text-[10px] tracking-[0.22em] text-muted uppercase">
-                  Name
-                </span>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your name"
-                  disabled
-                  className="min-h-12 w-full border border-white/10 bg-black/50 px-4 py-3 text-base text-white placeholder:text-white/25 outline-none"
-                />
-              </label>
-
-              <label className="block md:col-span-1">
-                <span className="mb-2 block text-[10px] tracking-[0.22em] text-muted uppercase">
-                  Email
-                </span>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="you@domain.com"
-                  disabled
-                  className="min-h-12 w-full border border-white/10 bg-black/50 px-4 py-3 text-base text-white placeholder:text-white/25 outline-none"
-                />
-              </label>
-
-              <label className="block md:col-span-1">
-                <span className="mb-2 block text-[10px] tracking-[0.22em] text-muted uppercase">
-                  Service
-                </span>
-                <select
-                  name="service"
-                  disabled
-                  defaultValue=""
-                  className="min-h-12 w-full appearance-none border border-white/10 bg-black/50 px-4 py-3 text-base text-white/40 outline-none"
-                >
-                  <option value="" disabled>
-                    Select a tier
-                  </option>
-                  <option>The Mix & Master Package</option>
-                  <option>Executive Production</option>
-                </select>
-              </label>
-
-              <label className="block md:col-span-1">
-                <span className="mb-2 block text-[10px] tracking-[0.22em] text-muted uppercase">
-                  Timeline
-                </span>
-                <input
-                  type="text"
-                  name="timeline"
-                  placeholder="e.g. 2 weeks"
-                  disabled
-                  className="min-h-12 w-full border border-white/10 bg-black/50 px-4 py-3 text-base text-white placeholder:text-white/25 outline-none"
-                />
-              </label>
-
-              <label className="block md:col-span-2">
-                <span className="mb-2 block text-[10px] tracking-[0.22em] text-muted uppercase">
-                  Project notes
-                </span>
-                <textarea
-                  name="notes"
-                  rows={4}
-                  placeholder="Links, references, vibe..."
-                  disabled
-                  className="w-full resize-none border border-white/10 bg-black/50 px-4 py-3 text-base text-white placeholder:text-white/25 outline-none"
-                />
-              </label>
-
-              <div className="flex flex-col gap-4 md:col-span-2 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-[10px] leading-relaxed tracking-[0.14em] text-muted uppercase sm:tracking-[0.18em]">
-                  Form placeholder — connect to your backend or form service
-                </p>
-                <button
-                  type="button"
-                  disabled
-                  className="inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center border border-white/20 bg-white/[0.04] px-6 py-3.5 text-[11px] tracking-[0.2em] text-white/50 uppercase sm:w-auto sm:tracking-[0.28em]"
-                >
-                  [ SEND INTAKE ]
-                </button>
-              </div>
-            </form>
+          <div className="mt-10 sm:mt-12">
+            <IntakeForm />
           </div>
         </Reveal>
 
