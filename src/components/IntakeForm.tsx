@@ -2,69 +2,20 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState, type FormEvent } from "react";
+import {
+  INTAKE_SERVICES,
+  validateIntake,
+  type IntakeFieldErrors,
+  type IntakePayload,
+} from "@/lib/intake";
 
-type FormFields = {
-  artistName: string;
-  instagram: string;
-  service: string;
-  description: string;
-  demoLink: string;
-};
-
-type FieldErrors = Partial<Record<keyof FormFields, string>>;
-
-const SERVICES = [
-  { value: "mix-master", label: "Mix & Master" },
-  { value: "executive-production", label: "Executive Production" },
-  { value: "custom-inquiry", label: "Custom Inquiry" },
-] as const;
-
-const initialValues: FormFields = {
+const initialValues: IntakePayload = {
   artistName: "",
   instagram: "",
   service: "",
   description: "",
   demoLink: "",
 };
-
-function validate(values: FormFields): FieldErrors {
-  const errors: FieldErrors = {};
-
-  if (!values.artistName.trim()) {
-    errors.artistName = "Artist / stage name is required.";
-  } else if (values.artistName.trim().length < 2) {
-    errors.artistName = "Enter at least 2 characters.";
-  }
-
-  const handle = values.instagram.trim();
-  if (!handle) {
-    errors.instagram = "Instagram handle is required.";
-  } else if (!/^@?[A-Za-z0-9._]{1,30}$/.test(handle)) {
-    errors.instagram = "Use a valid Instagram handle.";
-  }
-
-  if (!values.service) {
-    errors.service = "Select a service.";
-  }
-
-  if (!values.description.trim()) {
-    errors.description = "Add a project description or references.";
-  } else if (values.description.trim().length < 12) {
-    errors.description = "Give a bit more detail (12+ characters).";
-  }
-
-  const link = values.demoLink.trim();
-  if (!link) {
-    errors.demoLink = "Demo / stem link is required.";
-  } else if (
-    !/^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/i.test(link) &&
-    !/^(drive\.google|dropbox|wetransfer|linktr\.ee)/i.test(link)
-  ) {
-    errors.demoLink = "Paste a valid Drive, Dropbox, or WeTransfer link.";
-  }
-
-  return errors;
-}
 
 const fieldClass =
   "min-h-12 w-full border bg-black/60 px-4 py-3 text-base text-white outline-none transition-[border-color,box-shadow] placeholder:text-white/30 focus:border-accent/50 focus:shadow-[0_0_0_1px_rgba(167,139,250,0.25)]";
@@ -89,34 +40,38 @@ function FieldError({ message }: { message?: string }) {
 
 export function IntakeForm() {
   const reduce = useReducedMotion();
-  const [values, setValues] = useState<FormFields>(initialValues);
-  const [errors, setErrors] = useState<FieldErrors>({});
-  const [touched, setTouched] = useState<Partial<Record<keyof FormFields, boolean>>>(
-    {},
-  );
+  const [values, setValues] = useState<IntakePayload>(initialValues);
+  const [errors, setErrors] = useState<IntakeFieldErrors>({});
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof IntakePayload, boolean>>
+  >({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  function updateField<K extends keyof FormFields>(key: K, value: FormFields[K]) {
+  function updateField<K extends keyof IntakePayload>(
+    key: K,
+    value: IntakePayload[K],
+  ) {
     setValues((prev) => {
       const next = { ...prev, [key]: value };
       if (touched[key] || errors[key]) {
-        const nextErrors = validate(next);
+        const nextErrors = validateIntake(next);
         setErrors((e) => ({ ...e, [key]: nextErrors[key] }));
       }
       return next;
     });
   }
 
-  function handleBlur(key: keyof FormFields) {
+  function handleBlur(key: keyof IntakePayload) {
     setTouched((prev) => ({ ...prev, [key]: true }));
-    const nextErrors = validate(values);
+    const nextErrors = validateIntake(values);
     setErrors((prev) => ({ ...prev, [key]: nextErrors[key] }));
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const nextErrors = validate(values);
+    const nextErrors = validateIntake(values);
     setErrors(nextErrors);
     setTouched({
       artistName: true,
@@ -125,20 +80,41 @@ export function IntakeForm() {
       description: true,
       demoLink: true,
     });
+    setSubmitError(null);
 
     if (Object.keys(nextErrors).length > 0) return;
 
     setSubmitting(true);
-    // Mock submission latency
-    await new Promise((r) => setTimeout(r, 700));
-    setSubmitting(false);
-    setSuccess(true);
+    try {
+      const res = await fetch("/api/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        errors?: IntakeFieldErrors;
+      };
+
+      if (!res.ok) {
+        if (data.errors) setErrors(data.errors);
+        setSubmitError(data.error ?? "Something went wrong. Try again.");
+        return;
+      }
+
+      setSuccess(true);
+    } catch {
+      setSubmitError("Network error. Check your connection and try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function resetForm() {
     setValues(initialValues);
     setErrors({});
     setTouched({});
+    setSubmitError(null);
     setSuccess(false);
   }
 
@@ -158,7 +134,9 @@ export function IntakeForm() {
           {success ? (
             <motion.div
               key="success"
-              initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 0.94, y: 12 }}
+              initial={
+                reduce ? { opacity: 1 } : { opacity: 0, scale: 0.94, y: 12 }
+              }
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
@@ -169,7 +147,12 @@ export function IntakeForm() {
               <motion.div
                 initial={reduce ? false : { scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.12, type: "spring", stiffness: 260, damping: 18 }}
+                transition={{
+                  delay: 0.12,
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 18,
+                }}
                 className="mb-8 flex h-14 w-14 items-center justify-center border border-accent/40 bg-accent/10 text-accent-icy shadow-[0_0_28px_rgba(139,92,246,0.35)]"
                 aria-hidden
               >
@@ -189,7 +172,7 @@ export function IntakeForm() {
                 Let&apos;s Build.
               </p>
               <p className="mt-5 max-w-sm text-sm text-muted">
-                Your intake is locked in. Expect a reply with next steps soon.
+                Your intake hit the inbox. Expect a reply with next steps soon.
               </p>
               <motion.button
                 type="button"
@@ -226,9 +209,7 @@ export function IntakeForm() {
                   onBlur={() => handleBlur("artistName")}
                   aria-invalid={Boolean(errors.artistName)}
                   className={`${fieldClass} ${
-                    errors.artistName
-                      ? "border-red-400/50"
-                      : "border-white/10"
+                    errors.artistName ? "border-red-400/50" : "border-white/10"
                   }`}
                 />
                 <FieldError message={errors.artistName} />
@@ -248,9 +229,7 @@ export function IntakeForm() {
                   onBlur={() => handleBlur("instagram")}
                   aria-invalid={Boolean(errors.instagram)}
                   className={`${fieldClass} ${
-                    errors.instagram
-                      ? "border-red-400/50"
-                      : "border-white/10"
+                    errors.instagram ? "border-red-400/50" : "border-white/10"
                   }`}
                 />
                 <FieldError message={errors.instagram} />
@@ -269,17 +248,17 @@ export function IntakeForm() {
                     aria-invalid={Boolean(errors.service)}
                     className={`${fieldClass} appearance-none pr-10 ${
                       values.service ? "text-white" : "text-white/35"
-                    } ${
-                      errors.service
-                        ? "border-red-400/50"
-                        : "border-white/10"
-                    }`}
+                    } ${errors.service ? "border-red-400/50" : "border-white/10"}`}
                   >
                     <option value="" disabled>
                       Select a service
                     </option>
-                    {SERVICES.map((s) => (
-                      <option key={s.value} value={s.value} className="bg-black text-white">
+                    {INTAKE_SERVICES.map((s) => (
+                      <option
+                        key={s.value}
+                        value={s.value}
+                        className="bg-black text-white"
+                      >
                         {s.label}
                       </option>
                     ))}
@@ -329,18 +308,31 @@ export function IntakeForm() {
                   onBlur={() => handleBlur("demoLink")}
                   aria-invalid={Boolean(errors.demoLink)}
                   className={`${fieldClass} ${
-                    errors.demoLink
-                      ? "border-red-400/50"
-                      : "border-white/10"
+                    errors.demoLink ? "border-red-400/50" : "border-white/10"
                   }`}
                 />
                 <FieldError message={errors.demoLink} />
               </label>
 
               <div className="flex flex-col gap-4 pt-2 md:col-span-2 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-[10px] leading-relaxed tracking-[0.14em] text-muted uppercase sm:tracking-[0.18em]">
-                  All fields required · Mock intake (no backend yet)
-                </p>
+                <div className="min-w-0">
+                  <p className="text-[10px] leading-relaxed tracking-[0.14em] text-muted uppercase sm:tracking-[0.18em]">
+                    All fields required · Sent directly to inbox
+                  </p>
+                  <AnimatePresence>
+                    {submitError ? (
+                      <motion.p
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        className="mt-2 text-[11px] text-red-300/90"
+                        role="alert"
+                      >
+                        {submitError}
+                      </motion.p>
+                    ) : null}
+                  </AnimatePresence>
+                </div>
                 <motion.button
                   type="submit"
                   disabled={submitting}

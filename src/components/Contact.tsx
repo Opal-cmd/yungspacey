@@ -30,8 +30,7 @@ export function Contact() {
         </Reveal>
         <Reveal delay={0.16}>
           <p className="mt-4 max-w-lg text-sm text-muted md:text-base">
-            Lock in the brief. Artist details, service tier, references, and
-            stems — then we build.
+            Fill this out properly and I&apos;ll come back with a timeline. Half-assed briefs get half-assed results.
           </p>
         </Reveal>
 

@@ -52,12 +52,12 @@ export function Services() {
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="font-[family-name:var(--font-syne)] text-3xl font-bold tracking-tight text-white md:text-5xl">
-            Services Menu
+            What I Do
           </h2>
         </Reveal>
         <Reveal delay={0.16}>
           <p className="mt-4 max-w-lg text-sm text-muted md:text-base">
-            Fixed-rate tiers. Clear scope. No soft quotes that balloon mid-project.
+            Two tiers. Fixed rates. No scope creep, no soft quotes — what you see is what it costs.
           </p>
         </Reveal>
 

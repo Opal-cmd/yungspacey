@@ -47,8 +47,8 @@ export function Hero() {
 
         <Reveal immediate delay={0.28}>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted sm:mt-5 md:text-base">
-            Producer & sound engineer. Late-night sessions. Precision mixdowns.
-            Records that hit hard in the dark.
+            Based in Toronto. Working across R&B, drill, trap, and anything in between.
+            Precision engineering — from raw session to mastered record.
           </p>
         </Reveal>
 

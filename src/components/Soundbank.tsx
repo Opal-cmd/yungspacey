@@ -24,8 +24,7 @@ export function Soundbank() {
         </Reveal>
         <Reveal delay={0.16}>
           <p className="mt-4 max-w-lg text-sm text-muted md:text-base">
-            Selected cuts from late-night sessions. Press play — one track at a
-            time, no browser chrome.
+            A few reference cuts. One track at a time — no browser chrome, no distractions.
           </p>
         </Reveal>
 
