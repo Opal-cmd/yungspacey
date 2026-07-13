@@ -6,10 +6,10 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="snap-section relative flex flex-col justify-center px-6 py-24 md:px-10"
+      className="snap-section relative flex flex-col justify-center px-4 py-16 sm:px-6 sm:py-24 md:px-10"
     >
       <div
-        className="pointer-events-none absolute bottom-0 left-1/2 h-[360px] w-[600px] -translate-x-1/2 opacity-40 blur-[100px]"
+        className="pointer-events-none absolute bottom-0 left-1/2 h-[280px] w-[min(100vw,600px)] max-w-full -translate-x-1/2 opacity-40 blur-[80px] sm:h-[360px] sm:blur-[100px]"
         style={{
           background:
             "radial-gradient(ellipse, rgba(88,70,160,0.25), transparent 70%)",
@@ -35,9 +35,9 @@ export function Contact() {
         </Reveal>
 
         <Reveal delay={0.24}>
-          <div className="mt-12 border border-white/10 bg-obsidian/90 p-6 shadow-[0_0_50px_rgba(139,92,246,0.06)] md:p-10">
+          <div className="mt-10 border border-white/10 bg-obsidian/90 p-4 shadow-[0_0_50px_rgba(139,92,246,0.06)] sm:mt-12 sm:p-6 md:p-10">
             <form
-              className="grid gap-6 md:grid-cols-2"
+              className="grid gap-5 sm:gap-6 md:grid-cols-2"
               onSubmit={(e) => e.preventDefault()}
               aria-label="Project intake form placeholder"
             >
@@ -50,7 +50,7 @@ export function Contact() {
                   name="name"
                   placeholder="Your name"
                   disabled
-                  className="w-full border border-white/10 bg-black/50 px-4 py-3 text-sm text-white placeholder:text-white/25 outline-none"
+                  className="min-h-12 w-full border border-white/10 bg-black/50 px-4 py-3 text-base text-white placeholder:text-white/25 outline-none"
                 />
               </label>
 
@@ -63,7 +63,7 @@ export function Contact() {
                   name="email"
                   placeholder="you@domain.com"
                   disabled
-                  className="w-full border border-white/10 bg-black/50 px-4 py-3 text-sm text-white placeholder:text-white/25 outline-none"
+                  className="min-h-12 w-full border border-white/10 bg-black/50 px-4 py-3 text-base text-white placeholder:text-white/25 outline-none"
                 />
               </label>
 
@@ -75,7 +75,7 @@ export function Contact() {
                   name="service"
                   disabled
                   defaultValue=""
-                  className="w-full appearance-none border border-white/10 bg-black/50 px-4 py-3 text-sm text-white/40 outline-none"
+                  className="min-h-12 w-full appearance-none border border-white/10 bg-black/50 px-4 py-3 text-base text-white/40 outline-none"
                 >
                   <option value="" disabled>
                     Select a tier
@@ -94,7 +94,7 @@ export function Contact() {
                   name="timeline"
                   placeholder="e.g. 2 weeks"
                   disabled
-                  className="w-full border border-white/10 bg-black/50 px-4 py-3 text-sm text-white placeholder:text-white/25 outline-none"
+                  className="min-h-12 w-full border border-white/10 bg-black/50 px-4 py-3 text-base text-white placeholder:text-white/25 outline-none"
                 />
               </label>
 
@@ -104,21 +104,21 @@ export function Contact() {
                 </span>
                 <textarea
                   name="notes"
-                  rows={5}
+                  rows={4}
                   placeholder="Links, references, vibe..."
                   disabled
-                  className="w-full resize-none border border-white/10 bg-black/50 px-4 py-3 text-sm text-white placeholder:text-white/25 outline-none"
+                  className="w-full resize-none border border-white/10 bg-black/50 px-4 py-3 text-base text-white placeholder:text-white/25 outline-none"
                 />
               </label>
 
-              <div className="md:col-span-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-[10px] tracking-[0.18em] text-muted uppercase">
+              <div className="flex flex-col gap-4 md:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-[10px] leading-relaxed tracking-[0.14em] text-muted uppercase sm:tracking-[0.18em]">
                   Form placeholder — connect to your backend or form service
                 </p>
                 <button
                   type="button"
                   disabled
-                  className="inline-flex cursor-not-allowed items-center justify-center border border-white/20 bg-white/[0.04] px-6 py-3.5 text-[11px] tracking-[0.28em] text-white/50 uppercase"
+                  className="inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center border border-white/20 bg-white/[0.04] px-6 py-3.5 text-[11px] tracking-[0.2em] text-white/50 uppercase sm:w-auto sm:tracking-[0.28em]"
                 >
                   [ SEND INTAKE ]
                 </button>
@@ -133,7 +133,7 @@ export function Contact() {
               yungspacey
             </p>
             <p className="text-[10px] tracking-[0.2em] text-muted uppercase">
-              © {new Date().getFullYear()} · Uncompromising sonics
+              © 2026 · Uncompromising sonics
             </p>
           </footer>
         </Reveal>

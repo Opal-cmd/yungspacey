@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 type WaveformProps = {
@@ -9,6 +10,24 @@ type WaveformProps = {
   className?: string;
 };
 
+function useBarCount() {
+  const [count, setCount] = useState(48);
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      if (w < 380) setCount(24);
+      else if (w < 640) setCount(32);
+      else setCount(48);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return count;
+}
+
 export function Waveform({
   heights,
   isPlaying,
@@ -16,21 +35,32 @@ export function Waveform({
   className = "",
 }: WaveformProps) {
   const reduce = useReducedMotion();
-  const activeIndex = Math.floor(progress * (heights.length - 1));
+  const barCount = useBarCount();
+
+  const bars = useMemo(() => {
+    if (heights.length <= barCount) return heights;
+    const step = heights.length / barCount;
+    return Array.from({ length: barCount }, (_, i) => {
+      const idx = Math.min(heights.length - 1, Math.floor(i * step));
+      return heights[idx];
+    });
+  }, [heights, barCount]);
+
+  const activeIndex = Math.floor(progress * Math.max(bars.length - 1, 1));
 
   return (
     <div
-      className={`flex h-9 w-full items-center gap-[2px] sm:h-10 sm:gap-[3px] ${className}`}
+      className={`flex h-8 w-full items-center gap-[2px] overflow-hidden sm:h-10 sm:gap-[3px] ${className}`}
       aria-hidden
     >
-      {heights.map((h, i) => {
+      {bars.map((h, i) => {
         const passed = i <= activeIndex && progress > 0;
-        const baseHeight = Math.max(5, Math.round(h * 34));
+        const baseHeight = Math.max(4, Math.round(h * (barCount <= 32 ? 28 : 34)));
 
         return (
           <motion.span
             key={i}
-            className="min-w-0 flex-1 rounded-full"
+            className="min-w-[2px] flex-1 rounded-full will-change-transform"
             style={{
               height: baseHeight,
               transformOrigin: "center",

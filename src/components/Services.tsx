@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { Reveal, itemVariants } from "./Reveal";
+import { Reveal } from "./Reveal";
 
 const packages = [
   {
@@ -40,7 +40,7 @@ export function Services() {
   return (
     <section
       id="services"
-      className="snap-section relative flex flex-col justify-center px-6 py-24 md:px-10"
+      className="snap-section relative flex flex-col justify-center px-4 py-16 sm:px-6 sm:py-24 md:px-10"
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#000_0%,#050508_50%,#000_100%)]" />
 
@@ -65,16 +65,15 @@ export function Services() {
           {packages.map((pkg, index) => (
             <motion.article
               key={pkg.id}
-              variants={itemVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+              initial={reduce ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15, margin: "80px" }}
               transition={{
                 delay: reduce ? 0 : 0.12 + index * 0.12,
-                duration: 0.75,
+                duration: 0.65,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="group relative flex flex-col bg-black p-8 md:p-10"
+              className="group relative flex flex-col bg-black p-5 sm:p-8 md:p-10"
             >
               <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.08),transparent_60%)]" />
@@ -116,7 +115,7 @@ export function Services() {
 
                 <a
                   href="#contact"
-                  className="mt-10 inline-flex w-fit text-[11px] tracking-[0.25em] text-accent-icy uppercase transition-colors hover:text-white"
+                  className="mt-8 inline-flex min-h-11 items-center text-[11px] tracking-[0.25em] text-accent-icy uppercase transition-colors hover:text-white sm:mt-10"
                 >
                   Inquire →
                 </a>

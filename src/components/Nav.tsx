@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 const links = [
   { href: "#soundbank", label: "Soundbank" },
   { href: "#services", label: "Services" },
@@ -10,31 +8,27 @@ const links = [
 
 export function Nav() {
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-      className="pointer-events-none fixed inset-x-0 top-0 z-50"
-    >
-      <div className="pointer-events-auto mx-auto flex max-w-6xl items-center justify-between px-6 py-6 md:px-10">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 pt-[env(safe-area-inset-top)]">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/90 via-black/50 to-transparent" />
+      <div className="pointer-events-auto relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5 md:px-10">
         <a
           href="#hero"
-          className="font-[family-name:var(--font-syne)] text-sm font-bold tracking-[0.2em] text-white uppercase transition-colors hover:text-accent-icy"
+          className="shrink-0 font-[family-name:var(--font-syne)] text-xs font-bold tracking-[0.18em] text-white uppercase transition-colors hover:text-accent-icy sm:text-sm sm:tracking-[0.2em]"
         >
           yungspacey
         </a>
-        <nav className="hidden items-center gap-8 sm:flex">
+        <nav className="flex min-w-0 items-center justify-end gap-3 overflow-x-auto sm:gap-6 md:gap-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-[11px] tracking-[0.22em] text-muted uppercase transition-colors hover:text-white"
+              className="shrink-0 py-2 text-[10px] tracking-[0.14em] text-muted uppercase transition-colors hover:text-white active:text-white sm:text-[11px] sm:tracking-[0.22em]"
             >
               {link.label}
             </a>
           ))}
         </nav>
       </div>
-    </motion.header>
+    </header>
   );
 }

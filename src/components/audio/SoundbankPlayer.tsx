@@ -15,6 +15,9 @@ export function SoundbankPlayer() {
   useEffect(() => {
     const audio = new Audio();
     audio.preload = "metadata";
+    // Helps iOS treat playback as inline media after a user gesture
+    audio.setAttribute("playsinline", "true");
+    audio.setAttribute("webkit-playsinline", "true");
     audioRef.current = audio;
 
     const onTimeUpdate = () => {

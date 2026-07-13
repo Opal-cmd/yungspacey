@@ -1,107 +1,72 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
-
-const containerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.08,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 36,
-    clipPath: "inset(100% 0% 0% 0%)",
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    clipPath: "inset(0% 0% 0% 0%)",
-    transition: {
-      duration: 0.75,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
-const reducedItemVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3 } },
-};
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
   className?: string;
-  as?: "div" | "h1" | "h2" | "h3" | "p" | "span" | "li";
   delay?: number;
+  /** Animate on mount instead of waiting for scroll intersection */
+  immediate?: boolean;
 };
 
 export function Reveal({
   children,
   className,
-  as = "div",
   delay = 0,
+  immediate = false,
 }: RevealProps) {
   const reduce = useReducedMotion();
-  const Component = motion[as];
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, {
+    once: true,
+    amount: 0.05,
+    margin: "120px 0px 120px 0px",
+  });
+  const [failsafe, setFailsafe] = useState(false);
 
-  return (
-    <Component
-      className={className}
-      variants={reduce ? reducedItemVariants : itemVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.35 }}
-      custom={delay}
-      transition={
-        reduce
-          ? undefined
-          : { delay, duration: 0.75, ease: [0.22, 1, 0.36, 1] }
-      }
-    >
-      {children}
-    </Component>
-  );
-}
+  useEffect(() => {
+    const id = window.setTimeout(() => setFailsafe(true), 900);
+    return () => window.clearTimeout(id);
+  }, []);
 
-type RevealGroupProps = {
-  children: ReactNode;
-  className?: string;
-};
-
-export function RevealGroup({ children, className }: RevealGroupProps) {
-  const reduce = useReducedMotion();
+  const show = Boolean(reduce || immediate || inView || failsafe);
 
   return (
     <motion.div
+      ref={ref}
       className={className}
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.25 }}
+      initial={reduce ? false : { opacity: 0, y: 24 }}
+      animate={
+        show ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }
+      }
+      transition={
+        reduce
+          ? { duration: 0 }
+          : { delay, duration: 0.65, ease: [0.22, 1, 0.36, 1] }
+      }
     >
-      {Array.isArray(children)
-        ? children.map((child, i) => (
-            <motion.div
-              key={i}
-              variants={reduce ? reducedItemVariants : itemVariants}
-            >
-              {child}
-            </motion.div>
-          ))
-        : (
-            <motion.div variants={reduce ? reducedItemVariants : itemVariants}>
-              {children}
-            </motion.div>
-          )}
+      {children}
     </motion.div>
   );
 }
 
-export { itemVariants, containerVariants };
+export function RevealGroup({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={className}>{children}</div>;
+}
+
+export const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};

@@ -7,7 +7,7 @@ export function Soundbank() {
   return (
     <section
       id="soundbank"
-      className="snap-section relative flex flex-col justify-center px-6 py-24 md:px-10"
+      className="snap-section relative flex flex-col justify-center px-4 py-16 sm:px-6 sm:py-24 md:px-10"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,20,28,0.9)_0%,#000_70%)]" />
 
