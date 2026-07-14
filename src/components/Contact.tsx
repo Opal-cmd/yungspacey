@@ -29,7 +29,7 @@ export function Contact() {
         <Reveal delay={0.08}>
           <h2
             id="contact-heading"
-            className="font-[family-name:var(--font-syne)] text-3xl font-bold tracking-tight text-white md:text-5xl"
+            className="font-[family-name:var(--font-syne)] text-[1.75rem] font-bold tracking-tight text-white sm:text-3xl md:text-5xl"
           >
             Intake &amp; Booking
           </h2>

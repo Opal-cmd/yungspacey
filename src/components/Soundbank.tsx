@@ -21,7 +21,7 @@ export function Soundbank() {
         <Reveal delay={0.08}>
           <h2
             id="soundbank-heading"
-            className="font-[family-name:var(--font-syne)] text-3xl font-bold tracking-tight text-white md:text-5xl"
+            className="font-[family-name:var(--font-syne)] text-[1.75rem] font-bold tracking-tight text-white sm:text-3xl md:text-5xl"
           >
             The Soundbank
           </h2>

@@ -87,6 +87,8 @@ body {
     min-height: 100dvh;
     min-height: 100svh;
     padding-top: 0;
+    /* Keep brand + CTA in the lower half without huge dead air */
+    justify-content: flex-end;
   }
 }
 
